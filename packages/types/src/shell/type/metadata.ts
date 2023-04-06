@@ -1,18 +1,25 @@
 import { MouseEvent } from 'react';
 import { IPublicTypePropType, IPublicTypeComponentAction } from './';
-import { IPublicModelNode, IPublicModelProp, IPublicModelSettingField } from '../model';
+import {
+  IPublicModelLocateEvent,
+  IPublicModelNode,
+  IPublicModelProp,
+  IPublicModelSettingField,
+} from '../model';
 
 /**
  * 嵌套控制函数
  */
-export type IPublicTypeNestingFilter = (testNode: any, currentNode: any) => boolean;
+export type IPublicTypeNestingFilter = (
+  testNode: any,
+  currentNode: any,
+) => boolean;
 
 /**
  * 嵌套控制
  * 防止错误的节点嵌套，比如 a 嵌套 a, FormField 只能在 Form 容器下，Column 只能在 Table 下等
  */
 export interface IPublicTypeNestingRule {
-
   /**
    * 子级白名单
    */
@@ -43,7 +50,6 @@ export interface IPublicTypeNestingRule {
  * 组件能力配置
  */
 export interface IPublicTypeComponentConfigure {
-
   /**
    * 是否容器组件
    */
@@ -110,7 +116,6 @@ export interface IPublicTypeAutorunItem {
  * Live Text Editing（如果 children 内容是纯文本，支持双击直接编辑）的可配置项目
  */
 export interface IPublicTypeLiveTextEditingConfig {
-
   /**
    * @todo 待补充文档
    */
@@ -133,17 +138,18 @@ export interface IPublicTypeLiveTextEditingConfig {
   onSaveContent?: (content: string, prop: any) => any;
 }
 
-export type ConfigureSupportEvent = string | {
-  name: string;
-  propType?: IPublicTypePropType;
-  description?: string;
-};
+export type ConfigureSupportEvent =
+  | string
+  | {
+      name: string;
+      propType?: IPublicTypePropType;
+      description?: string;
+    };
 
 /**
  * 通用扩展面板支持性配置
  */
 export interface ConfigureSupport {
-
   /**
    * 支持事件列表
    */
@@ -185,19 +191,34 @@ export interface ConfigureSupport {
  */
 export interface IPublicTypeCallbacks {
   // hooks
-  onMouseDownHook?: (e: MouseEvent, currentNode: IPublicModelNode | null) => any;
+  onMouseDownHook?: (
+    e: MouseEvent,
+    currentNode: IPublicModelNode | null,
+  ) => any;
   onDblClickHook?: (e: MouseEvent, currentNode: IPublicModelNode | null) => any;
   onClickHook?: (e: MouseEvent, currentNode: IPublicModelNode | null) => any;
   // onLocateHook?: (e: any, currentNode: any) => any;
   // onAcceptHook?: (currentNode: any, locationData: any) => any;
-  onMoveHook?: (currentNode: IPublicModelNode) => boolean;
+  onMoveHook?: (
+    e: IPublicModelLocateEvent,
+    currentNode?: IPublicModelNode,
+  ) => boolean;
   // thinkof 限制性拖拽
   onHoverHook?: (currentNode: IPublicModelNode) => boolean;
-  onChildMoveHook?: (childNode: IPublicModelNode, currentNode: IPublicModelNode) => boolean;
+  onChildMoveHook?: (
+    childNode: IPublicModelNode,
+    currentNode: IPublicModelNode,
+  ) => boolean;
 
   // events
-  onNodeRemove?: (removedNode: IPublicModelNode | null, currentNode: IPublicModelNode | null) => void;
-  onNodeAdd?: (addedNode: IPublicModelNode | null, currentNode: IPublicModelNode | null) => void;
+  onNodeRemove?: (
+    removedNode: IPublicModelNode | null,
+    currentNode: IPublicModelNode | null,
+  ) => void;
+  onNodeAdd?: (
+    addedNode: IPublicModelNode | null,
+    currentNode: IPublicModelNode | null,
+  ) => void;
   onSubtreeModified?: (currentNode: IPublicModelNode, options: any) => void;
   onResize?: (
     e: MouseEvent & {

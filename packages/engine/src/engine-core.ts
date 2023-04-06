@@ -22,10 +22,7 @@ import {
   ILowCodePluginContextApiAssembler,
   PluginPreference,
 } from '@alilc/lowcode-designer';
-import {
-  Skeleton as InnerSkeleton,
-  registerDefaults,
-} from '@alilc/lowcode-editor-skeleton';
+import { Skeleton as InnerSkeleton, registerDefaults } from '@alilc/lowcode-editor-skeleton';
 import {
   Workspace as InnerWorkspace,
   Workbench as WorkSpaceWorkbench,
@@ -106,7 +103,11 @@ let plugins: Plugins;
 
 const pluginContextApiAssembler: ILowCodePluginContextApiAssembler = {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  assembleApis: (context: ILowCodePluginContextPrivate, pluginName: string, meta: IPublicTypePluginMeta) => {
+  assembleApis: (
+    context: ILowCodePluginContextPrivate,
+    pluginName: string,
+    meta: IPublicTypePluginMeta,
+  ) => {
     context.hotkey = hotkey;
     context.project = project;
     context.skeleton = new Skeleton(innerSkeleton, pluginName, false);
@@ -164,7 +165,7 @@ export async function init(
   container?: HTMLElement,
   options?: IPublicTypeEngineOptions,
   pluginPreference?: PluginPreference,
-  ) {
+) {
   await destroy();
   let engineOptions = null;
   if (isPlainObject(container)) {
@@ -216,7 +217,7 @@ export async function destroy() {
   // remove all documents
   const { documents } = project;
   if (Array.isArray(documents) && documents.length > 0) {
-    documents.forEach(((doc: IPublicModelDocumentModel) => project.removeDocument(doc)));
+    documents.forEach((doc: IPublicModelDocumentModel) => project.removeDocument(doc));
   }
 
   // TODO: delete plugins except for core plugins
