@@ -14,7 +14,11 @@ import { createIntl } from './locale';
 
 // patch cloneElement avoid lost keyProps
 const originCloneElement = window.React.cloneElement;
-(window as any).React.cloneElement = (child: any, { _leaf, ...props }: any = {}, ...rest: any[]) => {
+(window as any).React.cloneElement = (
+  child: any,
+  { _leaf, ...props }: any = {},
+  ...rest: any[]
+) => {
   if (child.ref && props.ref) {
     const dRef = props.ref;
     const cRef = child.ref;
@@ -46,7 +50,9 @@ const originCloneElement = window.React.cloneElement;
   return originCloneElement(child, props, ...rest);
 };
 
-export default class SimulatorRendererView extends Component<{ rendererContainer: SimulatorRendererContainer }> {
+export default class SimulatorRendererView extends Component<{
+  rendererContainer: SimulatorRendererContainer;
+}> {
   render() {
     const { rendererContainer } = this.props;
     return (
@@ -70,7 +76,13 @@ export class Routes extends Component<{ rendererContainer: SimulatorRendererCont
             <Route
               path={instance.path}
               key={instance.id}
-              render={(routeProps) => <Renderer documentInstance={instance} rendererContainer={rendererContainer} {...routeProps} />}
+              render={(routeProps) => (
+                <Renderer
+                  documentInstance={instance}
+                  rendererContainer={rendererContainer}
+                  {...routeProps}
+                />
+              )}
             />
           );
         })}
@@ -106,7 +118,11 @@ class Layout extends Component<{ rendererContainer: SimulatorRendererContainer }
     if (layout) {
       const { Component, props, componentName } = layout;
       if (Component) {
-        return <Component key="layout" props={props}>{children}</Component>;
+        return (
+          <Component key="layout" props={props}>
+            {children}
+          </Component>
+        );
       }
       if (componentName && rendererContainer.getComponent(componentName)) {
         return createElement(
@@ -164,7 +180,7 @@ class Renderer extends Component<{
 
   render() {
     const { documentInstance, rendererContainer: renderer } = this.props;
-    const { container, document } = documentInstance;
+    const { container, document, components } = documentInstance;
     const { designMode, device, locale } = container;
     const messages = container.context?.utils?.i18n?.messages || {};
     this.startTime = Date.now();
@@ -181,7 +197,7 @@ class Renderer extends Component<{
         locale={locale}
         messages={messages}
         schema={documentInstance.schema}
-        components={container.components}
+        components={components}
         appHelper={container.context}
         designMode={designMode}
         device={device}
@@ -218,7 +234,10 @@ class Renderer extends Component<{
               defaultPlaceholder = intl('Locked elements and child elements cannot be edited');
             }
             children = (
-              <div className={cn('lc-container-placeholder', { 'lc-container-locked': !!lockedNode })} style={viewProps.placeholderStyle}>
+              <div
+                className={cn('lc-container-placeholder', { 'lc-container-locked': !!lockedNode })}
+                style={viewProps.placeholderStyle}
+              >
                 {viewProps.placeholder || defaultPlaceholder}
               </div>
             );
@@ -254,7 +273,13 @@ class Renderer extends Component<{
           return createElement(
             getDeviceView(Component, device, designMode),
             viewProps,
-            leaf?.isContainer() ? (children == null ? [] : Array.isArray(children) ? children : [children]) : children,
+            leaf?.isContainer()
+              ? children == null
+                ? []
+                : Array.isArray(children)
+                ? children
+                : [children]
+              : children,
           );
         }}
         __host={host}

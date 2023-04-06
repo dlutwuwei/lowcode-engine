@@ -16,7 +16,7 @@
     "build:umd": "NODE_OPTIONS=--max_old_space_size=8192 build-scripts build --config build.umd.json",
     "test": "build-scripts test --config build.test.json --jest-passWithNoTests"
   },
-  "license": "MIT",
+  "license": "NOLICENSE",
   "dependencies": {
     "@alifd/next": "^1.19.12",
     "@alilc/lowcode-designer": "workspace:^1.1.5",
@@ -47,7 +47,7 @@
   },
   "publishConfig": {
     "access": "public",
-    "registry": "https://registry.npmjs.org/"
+    "registry": "http://verdaccio.lkcoffee.com/"
   },
   "repository": {
     "type": "http",

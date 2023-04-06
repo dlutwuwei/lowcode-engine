@@ -1,7 +1,10 @@
 {
   "compilerOptions": {
     "declaration": true,
-    "lib": ["es2015", "dom"],
+    "lib": [
+      "es2015",
+      "dom"
+    ],
     // Target latest version of ECMAScript.
     "target": "esnext",
     // Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'.
@@ -33,9 +36,17 @@
     "baseUrl": "./packages",
     "useDefineForClassFields": true,
     "paths": {
-      "@alilc/lowcode-*": ["./*/src"]
+      "@alilc/lowcode-*": [
+        "./*/src"
+      ]
     },
     "outDir": "lib"
   },
-  "exclude": ["**/tests/*", "**/*.test.ts", "**/lib", "**/es", "node_modules"]
+  "exclude": [
+    "**/tests/*",
+    "**/*.test.ts",
+    "**/lib",
+    "**/es",
+    "node_modules"
+  ]
 }
