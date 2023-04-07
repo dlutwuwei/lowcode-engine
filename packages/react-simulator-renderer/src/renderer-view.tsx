@@ -277,7 +277,7 @@ class Renderer extends Component<{
           }
 
           // px转化为rem
-          viewProps.style = transformPxToRem(props.style);
+          viewProps.style = transformPxToRem(viewProps.style);
 
           return createElement(
             getDeviceView(Component, device, designMode),
