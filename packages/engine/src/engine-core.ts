@@ -14,6 +14,7 @@ import {
   IPublicTypeEngineOptions,
   IPublicModelDocumentModel,
   IPublicTypePluginMeta,
+  IPublicApiPlugins,
 } from '@alilc/lowcode-types';
 import {
   Designer,
@@ -21,6 +22,7 @@ import {
   ILowCodePluginContextPrivate,
   ILowCodePluginContextApiAssembler,
   PluginPreference,
+  IDesigner,
 } from '@alilc/lowcode-designer';
 import { Skeleton as InnerSkeleton, registerDefaults } from '@alilc/lowcode-editor-skeleton';
 import {
@@ -57,7 +59,11 @@ export * from './modules/skeleton-types';
 export * from './modules/designer-types';
 export * from './modules/lowcode-types';
 
-async function registryInnerPlugin(designer: Designer, editor: Editor, plugins: Plugins) {
+async function registryInnerPlugin(
+  designer: IDesigner,
+  editor: Editor,
+  plugins: IPublicApiPlugins,
+) {
   // 注册一批内置插件
   await plugins.register(OutlinePlugin, {}, { autoInit: true });
   await plugins.register(componentMetaParser(designer));

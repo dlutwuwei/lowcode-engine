@@ -5,7 +5,7 @@ import { Node } from '@alilc/lowcode-designer';
 import LowCodeRenderer from '@alilc/lowcode-react-renderer';
 import { observer } from 'mobx-react';
 import { getClosestNode, isFromVC, isReactComponent } from '@alilc/lowcode-utils';
-import { GlobalEvent } from '@alilc/lowcode-types';
+import { GlobalEvent, IPublicModelComponentMeta } from '@alilc/lowcode-types';
 import { SimulatorRendererContainer, DocumentInstance } from './renderer';
 import { host } from './host';
 import { isRendererDetached } from './utils/misc';
@@ -221,7 +221,7 @@ class Renderer extends Component<{
           const { __id, ...viewProps } = props;
           viewProps.componentId = __id;
           const leaf = documentInstance.getNode(__id) as Node;
-          if (isFromVC(leaf?.componentMeta)) {
+          if (isFromVC(leaf?.componentMeta as IPublicModelComponentMeta)) {
             viewProps._leaf = leaf.internalToShellNode();
           }
           viewProps._componentName = leaf?.componentName;
@@ -279,16 +279,11 @@ class Renderer extends Component<{
           // px转化为rem
           viewProps.style = transformPxToRem(viewProps.style);
 
+          const container = children == null ? [] : Array.isArray(children) ? children : [children];
           return createElement(
             getDeviceView(Component, device, designMode),
             viewProps,
-            leaf?.isContainer()
-              ? children == null
-                ? []
-                : Array.isArray(children)
-                ? children
-                : [children]
-              : children,
+            leaf?.isContainer() ? container : children,
           );
         }}
         __host={host}
