@@ -11,9 +11,9 @@
     ]
   },
   "scripts": {
-    "build": "npx turbo run build",
-    "build:npm": "lerna run build --stream",
-    "build:umd": "lerna run build:umd --stream",
+    "build": "npm run build:npm && npm run build:umd",
+    "build:npm": "npx turbo run build",
+    "build:umd": "npx turbo run build:umd",
     "clean": "rimraf ./packages/*/lib ./packages/*/es ./packages/*/dist ./packages/*/build",
     "clean:lib": "rimraf ./node_modules",
     "lint": "f2elint scan -q -i ./packages/*/src",
