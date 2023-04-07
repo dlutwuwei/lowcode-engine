@@ -1,4 +1,4 @@
-export const tansformPxToRem = (styleData: Record<string, string> = {}) => {
+export const transformPxToRem = (styleData: Record<string, string> = {}) => {
   const style: Record<string, string> = {};
   Object.keys(styleData).forEach((key) => {
     const val = styleData[key];

@@ -36,6 +36,7 @@ import Slot from './builtin-components/slot';
 import Leaf from './builtin-components/leaf';
 import { withQueryParams, parseQuery } from './utils/url';
 import { merge } from 'lodash';
+import { transformPxToRem } from './utils/px2rem';
 
 const loader = new AssetLoader();
 configure({ enforceActions: 'never' });
@@ -496,6 +497,8 @@ export class SimulatorRendererContainer implements BuiltinSimulatorRenderer {
               isMock: true,
             };
             viewProps._leaf = _leaf;
+            // px转化为rem
+            viewProps.style = transformPxToRem(props.style);
             return createElement(Comp, viewProps, children);
           },
         });

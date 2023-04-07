@@ -11,7 +11,7 @@ import { host } from './host';
 import { isRendererDetached } from './utils/misc';
 import './renderer.less';
 import { createIntl } from './locale';
-import { tansformPxToRem } from './utils/px2rem';
+import { transformPxToRem } from './utils/px2rem';
 
 // patch cloneElement avoid lost keyProps
 const originCloneElement = window.React.cloneElement;
@@ -277,7 +277,7 @@ class Renderer extends Component<{
           }
 
           // px转化为rem
-          viewProps.style = tansformPxToRem(props.style);
+          viewProps.style = transformPxToRem(props.style);
 
           return createElement(
             getDeviceView(Component, device, designMode),
