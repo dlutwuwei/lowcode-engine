@@ -11,6 +11,7 @@ import { host } from './host';
 import { isRendererDetached } from './utils/misc';
 import './renderer.less';
 import { createIntl } from './locale';
+import { tansformPxToRem } from './utils/px2rem';
 
 // patch cloneElement avoid lost keyProps
 const originCloneElement = window.React.cloneElement;
@@ -111,7 +112,9 @@ function getDeviceView(view: any, device: string, mode: string) {
 }
 
 @observer
-class Layout extends Component<{ rendererContainer: SimulatorRendererContainer }> {
+class Layout extends Component<{
+  rendererContainer: SimulatorRendererContainer;
+}> {
   render() {
     const { rendererContainer, children } = this.props;
     const { layout } = rendererContainer;
@@ -143,7 +146,10 @@ class Layout extends Component<{ rendererContainer: SimulatorRendererContainer }
 
 @observer
 class Renderer extends Component<{
-  rendererContainer: SimulatorRendererContainer;
+  rendererContainer: SimulatorRendererContainer & {
+    suspended?: boolean;
+    scope?: any;
+  };
   documentInstance: DocumentInstance;
 }> {
   startTime: number | null = null;
@@ -197,7 +203,7 @@ class Renderer extends Component<{
         locale={locale}
         messages={messages}
         schema={documentInstance.schema}
-        components={components}
+        components={components as any}
         appHelper={container.context}
         designMode={designMode}
         device={device}
@@ -269,6 +275,9 @@ class Renderer extends Component<{
             console.error(`${viewProps._componentName} is not a react component!`);
             return null;
           }
+
+          // px转化为rem
+          viewProps.style = tansformPxToRem(props.style);
 
           return createElement(
             getDeviceView(Component, device, designMode),
