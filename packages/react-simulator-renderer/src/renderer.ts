@@ -265,7 +265,7 @@ export class SimulatorRendererContainer implements BuiltinSimulatorRenderer {
     this.disposeFunctions.push(
       host.connect(this, () => {
         // sync layout config
-        this._layout = host.project?.get('config')?.layout;
+        this._layout = host.project.get('config').layout;
 
         // todo: split with others, not all should recompute
         if (
@@ -317,7 +317,7 @@ export class SimulatorRendererContainer implements BuiltinSimulatorRenderer {
       initialEntries: [initialEntry],
     });
     this.history = history;
-    history.listen(({ location }) => {
+    history.listen((location) => {
       const docId = location.pathname.slice(1);
       docId && host.project.open(docId);
     });
@@ -484,6 +484,7 @@ export class SimulatorRendererContainer implements BuiltinSimulatorRenderer {
           rendererName: 'LowCodeRenderer',
           thisRequiredInJSE: host.thisRequiredInJSE,
           faultComponent: host.faultComponent,
+          faultComponentMap: host.faultComponentMap,
           customCreateElement: (Comp: any, props: any, children: any) => {
             const componentMeta = host.currentDocument?.getComponentMeta(Comp.displayName);
             if (componentMeta?.isModal) {
@@ -496,9 +497,10 @@ export class SimulatorRendererContainer implements BuiltinSimulatorRenderer {
               isEmpty: () => false,
               isMock: true,
             };
-            viewProps._leaf = _leaf;
             // px转化为rem
             viewProps.style = transformPxToRem(props.style);
+
+            viewProps._leaf = _leaf;
             return createElement(Comp, viewProps, children);
           },
         });
@@ -526,7 +528,7 @@ export class SimulatorRendererContainer implements BuiltinSimulatorRenderer {
     document.body.classList.add('engine-document'); // important! Stylesheet.invoke depends
 
     reactRender(createElement(SimulatorRendererView, { rendererContainer: this }), container);
-    (host.project as any).setRendererReady(this);
+    host.project.setRendererReady(this);
   }
 
   /**
@@ -654,6 +656,7 @@ function getLowCodeComponentProps(props: any) {
     }
     newProps[k] = props[k];
   });
+  newProps['componentName'] = props['_componentName'];
   return newProps;
 }
 

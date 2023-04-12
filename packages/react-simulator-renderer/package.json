@@ -1,6 +1,6 @@
 {
   "name": "@ladder/lowcode-react-simulator-renderer",
-  "version": "1.1.6",
+  "version": "1.0.1",
   "description": "react simulator renderer for alibaba lowcode designer",
   "main": "lib/index.js",
   "module": "es/index.js",

@@ -5,7 +5,7 @@ import { Node } from '@alilc/lowcode-designer';
 import LowCodeRenderer from '@alilc/lowcode-react-renderer';
 import { observer } from 'mobx-react';
 import { getClosestNode, isFromVC, isReactComponent } from '@alilc/lowcode-utils';
-import { GlobalEvent, IPublicModelComponentMeta } from '@alilc/lowcode-types';
+import { GlobalEvent } from '@alilc/lowcode-types';
 import { SimulatorRendererContainer, DocumentInstance } from './renderer';
 import { host } from './host';
 import { isRendererDetached } from './utils/misc';
@@ -112,9 +112,7 @@ function getDeviceView(view: any, device: string, mode: string) {
 }
 
 @observer
-class Layout extends Component<{
-  rendererContainer: SimulatorRendererContainer;
-}> {
+class Layout extends Component<{ rendererContainer: SimulatorRendererContainer }> {
   render() {
     const { rendererContainer, children } = this.props;
     const { layout } = rendererContainer;
@@ -146,10 +144,7 @@ class Layout extends Component<{
 
 @observer
 class Renderer extends Component<{
-  rendererContainer: SimulatorRendererContainer & {
-    suspended?: boolean;
-    scope?: any;
-  };
+  rendererContainer: SimulatorRendererContainer;
   documentInstance: DocumentInstance;
 }> {
   startTime: number | null = null;
@@ -186,7 +181,7 @@ class Renderer extends Component<{
 
   render() {
     const { documentInstance, rendererContainer: renderer } = this.props;
-    const { container, document, components } = documentInstance;
+    const { container, document } = documentInstance;
     const { designMode, device, locale } = container;
     const messages = container.context?.utils?.i18n?.messages || {};
     this.startTime = Date.now();
@@ -203,7 +198,7 @@ class Renderer extends Component<{
         locale={locale}
         messages={messages}
         schema={documentInstance.schema}
-        components={components as any}
+        components={container.components}
         appHelper={container.context}
         designMode={designMode}
         device={device}
@@ -217,15 +212,17 @@ class Renderer extends Component<{
         thisRequiredInJSE={host.thisRequiredInJSE}
         notFoundComponent={host.notFoundComponent}
         faultComponent={host.faultComponent}
+        faultComponentMap={host.faultComponentMap}
         customCreateElement={(Component: any, props: any, children: any) => {
           const { __id, ...viewProps } = props;
           viewProps.componentId = __id;
           const leaf = documentInstance.getNode(__id) as Node;
-          if (isFromVC(leaf?.componentMeta as IPublicModelComponentMeta)) {
+          if (isFromVC(leaf?.componentMeta)) {
             viewProps._leaf = leaf.internalToShellNode();
           }
           viewProps._componentName = leaf?.componentName;
           // 如果是容器 && 无children && 高宽为空 增加一个占位容器，方便拖动
+
           if (
             !viewProps.dataSource &&
             leaf?.isContainer() &&
@@ -279,11 +276,16 @@ class Renderer extends Component<{
           // px转化为rem
           viewProps.style = transformPxToRem(viewProps.style);
 
-          const container = children == null ? [] : Array.isArray(children) ? children : [children];
           return createElement(
             getDeviceView(Component, device, designMode),
             viewProps,
-            leaf?.isContainer() ? container : children,
+            leaf?.isContainer()
+              ? children == null
+                ? []
+                : Array.isArray(children)
+                ? children
+                : [children]
+              : children,
           );
         }}
         __host={host}
