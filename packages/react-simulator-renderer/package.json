@@ -1,6 +1,6 @@
 {
   "name": "@ladder/lowcode-react-simulator-renderer",
-  "version": "1.1.9",
+  "version": "1.1.6",
   "description": "react simulator renderer for alibaba lowcode designer",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -12,25 +12,23 @@
   ],
   "scripts": {
     "test": "build-scripts test --config build.test.json",
-    "prepublishOnly": "npm run build && npm run build:umd",
     "build": "NODE_OPTIONS=--max_old_space_size=8192 build-scripts build --skip-demo",
     "build:umd": "NODE_OPTIONS=--max_old_space_size=8192 build-scripts build --config build.umd.json",
-    "test:cov": "build-scripts test --config build.test.json --jest-coverage"
+    "test:cov": "build-scripts test --config build.test.json --jest-coverage",
+    "prepublishOnly": "npm run build && npm run build:umd"
   },
   "dependencies": {
-    "@alilc/lowcode-designer": "workspace:^1.1.5",
-    "@alilc/lowcode-react-renderer": "workspace:^1.1.5",
-    "@alilc/lowcode-types": "workspace:^1.1.5",
-    "@alilc/lowcode-utils": "workspace:^1.1.5",
-    "@babel/runtime": "^7.21.0",
+    "@alilc/lowcode-designer": "1.1.6",
+    "@alilc/lowcode-react-renderer": "1.1.6",
+    "@alilc/lowcode-types": "1.1.6",
+    "@alilc/lowcode-utils": "1.1.6",
     "classnames": "^2.2.6",
-    "history": "^5.3.0",
-    "lodash": "^4.17.21",
+    "history": "^5.0.0",
     "mobx": "^6.3.0",
     "mobx-react": "^7.2.0",
     "react": "^16",
     "react-dom": "^16.7.0",
-    "react-router": "5.3.4",
+    "react-router": "5",
     "tslib": "^2.5.0"
   },
   "devDependencies": {
@@ -39,7 +37,7 @@
     "@types/node": "^13.7.1",
     "@types/react": "^16",
     "@types/react-dom": "^16",
-    "@types/react-router": "5.1.20"
+    "@types/react-router": "5.1.18"
   },
   "publishConfig": {
     "access": "public",
