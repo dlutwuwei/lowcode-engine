@@ -317,8 +317,8 @@ export class SimulatorRendererContainer implements BuiltinSimulatorRenderer {
       initialEntries: [initialEntry],
     });
     this.history = history;
-    history.listen((location) => {
-      const docId = location.pathname.slice(1);
+    history.listen((update) => {
+      const docId = update.location.pathname.slice(1);
       docId && host.project.open(docId);
     });
     host.componentsConsumer.consume(async (componentsAsset) => {
